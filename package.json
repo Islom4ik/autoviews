@@ -1,0 +1,21 @@
+{
+  "name": "autoviewsbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@qiwi/bill-payments-node-js-sdk": "^3.2.1",
+    "axios": "^1.2.3",
+    "dotenv": "^16.0.3",
+    "mongodb": "^4.13.0",
+    "nodemon": "^2.0.20",
+    "telegraf": "^4.11.2"
+  }
+}
