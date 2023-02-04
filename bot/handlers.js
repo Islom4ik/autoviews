@@ -795,7 +795,7 @@ getadmtar.enter(async ctx => {
 getadmtar.action('suply', async ctx => {
     try {
         await ctx.deleteMessage(ctx.callbackQuery.message.message_id)
-        await ctx.reply('Изменено 🟢', {reply_markup: {keyboard: [['Редактировать цены тарифов 📝'],['Статистика 📈', 'История 🗂'], ['🏠 Назад на главное меню']], resize_keyboard: true}})
+        await ctx.reply('Изменено 🟢', {reply_markup: {keyboard: [['Редактировать цены тарифов 📝', 'Управление пользователями 👤'],['Статистика 📈', 'История 🗂'], ['🏠 Назад на главное меню']], resize_keyboard: true}})
         return ctx.scene.leave('getadmtar')
     } catch (e) {
         console.error(e);
@@ -1132,15 +1132,150 @@ t3and30d.on('text', async ctx => {
 })
 
 
+const getuserdb = new Scenes.BaseScene("getuserdb");
+getuserdb.enter(async ctx => {
+    try {
+        await collection.findOneAndUpdate({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}, {$set: {met: 'none'}})
+        const dm = await ctx.reply('...', {reply_markup: {remove_keyboard: true}})
+        await ctx.deleteMessage(dm.message_id)
+        await ctx.reply('По чему будем искать?', {reply_markup: {inline_keyboard: [[Markup.button.callback('По username 🔍', 'byusn'), Markup.button.callback('По имени 🔍', 'byn')], [Markup.button.callback('Отмена 🔴', 'cancf')]]}})
+    } catch (e) {
+        console.error(e);
+    }
+});
 
+getuserdb.on('text', async ctx => {
+    try {
+        const admdb = await collection.findOne({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')})
+        if (admdb.met == 'none') {
+            return ctx.reply('Нажмите на одну из кнопок выше ⬆️')
+        }
+        if (admdb.met == 'byusn') {
+            const text = ctx.message.text
+            const searchString = /[\!\#\№\"\;\$\%\^\:\&\?\*\(\)\{\}\[\]\?\/\,.\\\|\/\+\=]+/g;
+            if (ctx.message.text.match(searchString)) return await ctx.reply('Введите данные как на приведенном примере выше ⬆️');
+            if(text[0] != '@') return ctx.reply('Введите данные как на приведенном примере выше ⬆️')
+            await ctx.reply('Поиск...')
+            const user = await collection.findOne({user_name: text})
+            if(user == null) return ctx.reply('Пользователь не найден.')
+            let newar = []
+            await collection.findOneAndUpdate({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}, {$set: {findedus: user.user_id}})
+            if (user.paid.length == 0) return await ctx.reply(`Найден пользователь по запросу: ${text}\n\nИмя: ${user.user_fname}\nUsername: ${user.user_name}\nId: ${user.accountid}\nUser Id: ${user.user_id}\n\nБаланс: ${user.moneyc}₽`, {reply_markup: {inline_keyboard: [[Markup.button.callback('Изменить баланс пользователя 📝', 'editusmoneyc')], [Markup.button.callback('Назад ↩️', 'backtoadm')]]}})
 
-const stage = new Scenes.Stage([moneytopup, getgroup, gettar, getdays, getstopchan, getstartchan, getadmtar, t1and7d, t1and14d, t1and30d, t2and7d, t2and14d, t2and30d, t3and7d, t3and14d, t3and30d]);  
+            for (let i = 0; i < user.paid.length; i++) {
+                await newar.push(`${i+1}: Bill ID - ${user.paid[i]}`)
+            }
+            const str = await newar.join('\n')
+            return await ctx.reply(`Найден пользователь по запросу: ${text}\n\nИмя: ${user.user_fname}\nUsername: ${user.user_name}\nId: ${user.accountid}\nUser Id: ${user.user_id}\n\nБаланс: ${user.moneyc}₽\nПополнения(bill ids):\n${str}`, {reply_markup: {inline_keyboard: [[Markup.button.callback('Изменить баланс пользователя 📝', 'editusmoneyc')], [Markup.button.callback('Назад ↩️', 'backtoadm')]]}})
+        } else {
+            const text = ctx.message.text
+            await ctx.reply('Поиск...')
+            const user = await collection.findOne({user_fname: text})
+            if(user == null) return ctx.reply('Пользователь не найден.')
+            let newar = []
+            await collection.findOneAndUpdate({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}, {$set: {findedus: user.user_id}})
+            if (user.paid.length == 0) return await ctx.reply(`Найден пользователь по запросу: ${text}\n\nИмя: ${user.user_fname}\nUsername: ${user.user_name}\nId: ${user.accountid}\nUser Id: ${user.user_id}\n\nБаланс: ${user.moneyc}₽`, {reply_markup: {inline_keyboard: [[Markup.button.callback('Изменить баланс пользователя 📝', 'editusmoneyc')], [Markup.button.callback('Назад ↩️', 'backtoadm')]]}})
+
+            for (let i = 0; i < user.paid.length; i++) {
+                await newar.push(`${i+1}: Bill ID - ${user.paid[i]}`)
+            }
+            const str = await newar.join('\n')
+            return await ctx.reply(`Найден пользователь по запросу: ${text}\n\nИмя: ${user.user_fname}\nUsername: ${user.user_name}\nId: ${user.accountid}\nUser Id: ${user.user_id}\n\nБаланс: ${user.moneyc}₽\nПополнения(bill ids):\n${str}`, {reply_markup: {inline_keyboard: [[Markup.button.callback('Изменить баланс пользователя 📝', 'editusmoneyc')], [Markup.button.callback('Назад ↩️', 'backtoadm')]]}})
+        }
+    } catch (e) {
+        console.error(e);
+    }
+})
+
+getuserdb.action('byusn', async ctx => {
+    try {
+        await collection.findOneAndUpdate({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}, {$set: {met: 'byusn'}})
+        await ctx.deleteMessage(ctx.callbackQuery.message.message_id)
+        await ctx.reply('Введите username(@myusername) пользователя:')
+        await ctx.answerCbQuery()
+    } catch (e) {
+        console.error(e);
+    }
+})
+
+getuserdb.action('byn', async ctx => {
+    try {
+        await collection.findOneAndUpdate({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}, {$set: {met: 'byn'}})
+        await ctx.deleteMessage(ctx.callbackQuery.message.message_id)
+        await ctx.reply('Введите имя(Мое имя) пользователя:')
+        await ctx.answerCbQuery()
+    } catch (e) {
+        console.error(e);
+    }
+})
+
+getuserdb.action('cancf', async ctx => {
+    try {
+        await ctx.deleteMessage(ctx.callbackQuery.message.message_id)
+        await ctx.answerCbQuery()
+        await ctx.reply('Отменено.', {reply_markup: {keyboard: [['Редактировать цены тарифов 📝', 'Управление пользователями 👤'],['Статистика 📈', 'История 🗂'], ['🏠 Назад на главное меню']],resize_keyboard: true}})
+        await ctx.scene.leave('getuserdb')
+    } catch (e) {
+        console.error(e);
+    }
+})
+
+getuserdb.action('backtoadm', async ctx => {
+    try {
+        await ctx.deleteMessage(ctx.callbackQuery.message.message_id)
+        await ctx.answerCbQuery()
+        await ctx.reply('Админ меню 🏠', {reply_markup: {keyboard: [['Редактировать цены тарифов 📝', 'Управление пользователями 👤'],['Статистика 📈', 'История 🗂'], ['🏠 Назад на главное меню']],resize_keyboard: true}})
+        await ctx.scene.leave('getuserdb')
+    } catch (e) {
+        console.error(e);
+    }
+})
+
+getuserdb.action('editusmoneyc', async ctx => {
+    try {
+        await ctx.deleteMessage(ctx.callbackQuery.message.message_id)
+        await ctx.answerCbQuery()
+        await ctx.scene.enter('getmoneyc')
+    } catch (e) {
+        console.error(e);
+    }
+})
+
+const getmoneyc = new Scenes.BaseScene("getmoneyc");
+getmoneyc.enter(async ctx => {
+    try {
+        await ctx.reply('Введите сумму:', {reply_markup: {keyboard: [['Отмена 🔴']], resize_keyboard: true}})
+    } catch (e) {
+        console.error(e);
+    }
+});
+
+getmoneyc.on('text', async ctx => {
+    try {
+        if(ctx.message.text == 'Отмена 🔴') {
+            ctx.reply('Отменено.', {reply_markup: {keyboard: [['Редактировать цены тарифов 📝', 'Управление пользователями 👤'],['Статистика 📈', 'История 🗂'], ['🏠 Назад на главное меню']], resize_keyboard: true}})
+            return ctx.scene.leave('getmoneyc')
+        }
+        const searchString = /[\!\@\#\№\"\;\$\%\^\:\&\?\*\(\)\{\}\[\]\?\/\,\\\|\/\+\=\a-z\а-я]+/g;
+        if (ctx.message.text.match(searchString)) return await ctx.reply('Введите сумму(числа):');
+        const admdb = await collection.findOne({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')})
+        const userdb = await collection.findOneAndUpdate({user_id: admdb.findedus}, {$set: {moneyc: ctx.message.text}})
+        await ctx.reply('Изменено ✅', {reply_markup: {keyboard: [['Редактировать цены тарифов 📝', 'Управление пользователями 👤'],['Статистика 📈', 'История 🗂'], ['🏠 Назад на главное меню']], resize_keyboard: true}})
+        await ctx.scene.leave('getmoneyc')
+    } catch (e) {
+        console.error(e);
+    }
+})
+
+const stage = new Scenes.Stage([moneytopup, getgroup, gettar, getdays, getstopchan, getstartchan, getadmtar, t1and7d, t1and14d, t1and30d, t2and7d, t2and14d, t2and30d, t3and7d, t3and14d, t3and30d, getuserdb, getmoneyc]);  
 bot.use(session());
 bot.use(stage.middleware());
 
 bot.hears(['📰 Мой профиль'], async ctx => {
     try {
         const userDB = await collection.findOne({user_id: ctx.from.id})
+        if(userDB.user_fname != ctx.from.first_name) await collection.findOneAndUpdate({user_id: ctx.from.id}, {$set: {user_fname: ctx.from.first_name}})
+        if(userDB.user_name != ctx.from.username) await collection.findOneAndUpdate({user_id: ctx.from.id}, {$set: {user_name: ctx.from.username}})
         if (userDB.value == "WAITING") return await ctx.reply('Вы ещё не закончили пополнение, вы можете отменить пополнение нажав на кнопку отмены.')
         return ctx.replyWithHTML(`📰 Ваш профиль\n├💰 Баланс: ${userDB.moneyc} руб.\n└🆔 ID: <code>${userDB.accountid}</code>\nПодпишись на наш <a href="${linkToChanel}">канал</a> и будь в курсе всех изменений.`);
     } catch (e) {
@@ -1160,6 +1295,8 @@ bot.hears(['💳 Пополнить'], async ctx => {
 bot.hears(['📖 Цены'], async ctx => {
     try {
         const userDB = await collection.findOne({user_id: ctx.from.id})
+        if(userDB.user_fname != ctx.from.first_name) await collection.findOneAndUpdate({user_id: ctx.from.id}, {$set: {user_fname: ctx.from.first_name}})
+        if(userDB.user_name != ctx.from.username) await collection.findOneAndUpdate({user_id: ctx.from.id}, {$set: {user_name: ctx.from.username}})
         const admDB = await collection.findOne({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')})
         if (userDB.value == "WAITING") return await ctx.reply('Вы ещё не закончили пополнение, вы можете отменить пополнение нажав на кнопку отмены.')
         return await ctx.reply(`🏦 Цены 🏦\nАвтопросмотры на все новые записи.\n\n👁‍🗨 Тариф - 1\nЦелевое количество просмотров: 2500 за день\nСкорость за час: +100 просмотров\nКол-во дней:\n📕 7 дней - ${admDB.t17} руб\n📗 14 дней - ${admDB.t114} руб\n📘 30 дней - ${admDB.t130} руб\n\n👁‍🗨 Тариф - 2\nЦелевое количество просмотров: 6000 за день\nСкорость за час: +250 просмотров\nКол-во дней:\n📕 7 дней - ${admDB.t27} руб\n📗 14 дней - ${admDB.t214} руб\n📘 30 дней - ${admDB.t230} руб\n\n👁‍🗨 Тариф - 3\nЦелевое количество просмотров: 12000 за день\nСкорость за час: +500 просмотров\nКол-во дней:\n📕 7 дней - ${admDB.t37} руб\n📗 14 дней - ${admDB.t314} руб\n📘 30 дней - ${admDB.t330} руб`);
@@ -1242,7 +1379,7 @@ bot.hears(['▶️ Возобновить'], async ctx => {
 
 bot.hears(['Статистика 📈'], async ctx => {
     try {
-        if(ctx.from.id != '1864491973') return await ctx.reply('Не достаточно прав.')
+        // if(ctx.from.id != '1864491973') return await ctx.reply('Не достаточно прав.')
         const admDB = await collection.findOne({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')});
         await ctx.reply(`STATISTICS:\n\nОбщее количество пользователей: ${admDB.users}\nКоличество успешных пополнений: ${admDB.ordersc}\nКоличество заработанных денег за все время: ${admDB.moneyget}₽`)
     } catch (e) {
@@ -1252,7 +1389,7 @@ bot.hears(['Статистика 📈'], async ctx => {
 
 bot.hears(['История 🗂'], async ctx => {
     try {
-        if(ctx.from.id != '1864491973') return await ctx.reply('Не достаточно прав.')
+        // if(ctx.from.id != '1864491973') return await ctx.reply('Не достаточно прав.')
         const admDB = await collection.findOne({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')});
         let newarr = []
         let str;
@@ -1290,8 +1427,17 @@ bot.hears(['🏠 Назад на главное меню'], async ctx => {
 
 bot.hears(['Редактировать цены тарифов 📝'], async ctx => {
     try {
-        if(ctx.from.id != '1864491973') return await ctx.reply('Не достаточно прав.')
+        // if(ctx.from.id != '1864491973') return await ctx.reply('Не достаточно прав.')
         return ctx.scene.enter('getadmtar')
+    } catch (e) {
+        console.error(e);
+    }
+});
+
+bot.hears(['Управление пользователями 👤'], async ctx => {
+    try {
+        // if(ctx.from.id != '1864491973') return await ctx.reply('Не достаточно прав.')
+        return ctx.scene.enter('getuserdb')
     } catch (e) {
         console.error(e);
     }
@@ -1299,8 +1445,8 @@ bot.hears(['Редактировать цены тарифов 📝'], async ctx
 
 bot.command('admin', async ctx => {
     try {
-        if(ctx.from.id != '1864491973') return await ctx.reply('Не достаточно прав.')
-        return await ctx.reply('Добро пожаловать в админку!', {reply_markup: {keyboard: [['Редактировать цены тарифов 📝'],['Статистика 📈', 'История 🗂'], ['🏠 Назад на главное меню']], resize_keyboard: true}}) 
+        // if(ctx.from.id != '1864491973') return await ctx.reply('Не достаточно прав.')
+        return await ctx.reply('Добро пожаловать в админку!', {reply_markup: {keyboard: [['Редактировать цены тарифов 📝', 'Управление пользователями 👤'],['Статистика 📈', 'История 🗂'], ['🏠 Назад на главное меню']], resize_keyboard: true}})  
     } catch (e) {
         console.error(e);
     }

@@ -23,7 +23,9 @@ bot.start(async (ctx) => {
             ['🛒 Заказать', '🔴 Мои заказы', '📖 Цены']
         ]).resize());
         const userInDB = await collection.findOne({user_id: ctx.from.id});
-        if(userInDB == null) {const accus = await collection.findOne({_id: ObjectId('63ccf4810394ae88ef1ad14a')});const res = accus.ids+1;await collection.insertOne({user_id: ctx.from.id, moneyc: 0, accountid: res, uorders: [], paid: [], user_fname: ctx.from.first_name});await collection.findOneAndUpdate({_id: ObjectId('63ccf4810394ae88ef1ad14a')}, {$set: {ids: res}}); await collection.findOneAndUpdate({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}, {$push: {usersarr: {chat_id: ctx.chat.id}}}); return await collection.findOneAndUpdate({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}, {$set: {users: res}});};
+        if(userInDB == null) {const accus = await collection.findOne({_id: ObjectId('63ccf4810394ae88ef1ad14a')});const res = accus.ids+1;await collection.insertOne({user_id: ctx.from.id, moneyc: 0, accountid: res, uorders: [], paid: [], user_fname: ctx.from.first_name, user_name: `@${ctx.from.username}`});await collection.findOneAndUpdate({_id: ObjectId('63ccf4810394ae88ef1ad14a')}, {$set: {ids: res}}); await collection.findOneAndUpdate({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}, {$push: {usersarr: {chat_id: ctx.chat.id}}}); return await collection.findOneAndUpdate({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}, {$set: {users: res}});};
+        if(userDB.user_fname != ctx.from.first_name) await collection.findOneAndUpdate({user_id: ctx.from.id}, {$set: {user_fname: ctx.from.first_name}})
+        if(userDB.user_name != ctx.from.username) await collection.findOneAndUpdate({user_id: ctx.from.id}, {$set: {user_name: ctx.from.username}})
     } catch (e) {
         console.error(e);
     }
