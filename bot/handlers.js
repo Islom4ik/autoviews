@@ -18,10 +18,9 @@ moneytopup.on('text', async ctx => {
     try {
         if(ctx.message.text == 'Отменить пополнение 🔴') {
             await ctx.reply('Отменено.')
-            await ctx.scene.leave('moneytopup')
+            return await ctx.scene.leave('moneytopup')
         }
         const num = Number(ctx.message.text.replace(/[^\d]/g, ''));
-        console.log(num);
         const chekn = num.toString();
         console.log(chekn);
         if(chekn[0] <= '0') {
