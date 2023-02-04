@@ -184,7 +184,7 @@ gettar.action('t3', async ctx => {
 const getstopchan = new Scenes.BaseScene("getstopchan");
 getstopchan.enter(async ctx => {
     try {
-        return await ctx.reply('Введите юзернейм канала, пример - @mygroupname:');
+        return await ctx.reply('Введите юзернейм канала, пример - @mygroupname:', {reply_markup: {keyboard: [['Отменить 🔴']],  resize_keyboard: true}});
     } catch (e) {
         console.error(e);
     }
@@ -192,6 +192,11 @@ getstopchan.enter(async ctx => {
 
 getstopchan.on('text', async ctx => {
     try {
+        if (ctx.message.text == 'Отменить 🔴') {
+            await ctx.reply('Отменено.', {reply_markup: {keyboard: [['📰 Мой профиль', '💳 Пополнить'],
+            ['🛒 Заказать', '🔴 Мои заказы', '📖 Цены']], resize_keyboard: true}})
+            return await ctx.scene.leave('getstopchan')
+        }
         const text = await ctx.message.text.replace(/[^a-zа-яё@_]/gi, '');
         if (text[0] != '@') return await ctx.reply('Пожалуйста, можете предоставить информацию, как на следующем примере:\n\nПример: @mygroupname');
         const channel = await bot.telegram.getChat(text);
@@ -212,17 +217,20 @@ getstopchan.on('text', async ctx => {
             
                 await axios(config)
                 .then(async response => {
-                    await ctx.reply('Просмотры приостановлены.')
+                    await ctx.reply('Просмотры приостановлены.', {reply_markup: {keyboard: [['📰 Мой профиль', '💳 Пополнить'],
+                    ['🛒 Заказать', '🔴 Мои заказы', '📖 Цены']], resize_keyboard: true}})
                     return await ctx.scene.leave('getstopchan')
                 })
                 .catch(async error => {
                     console.log(error);
-                    await ctx.reply('Что-то пошло не так...')
+                    await ctx.reply('Что-то пошло не так...', {reply_markup: {keyboard: [['📰 Мой профиль', '💳 Пополнить'],
+                    ['🛒 Заказать', '🔴 Мои заказы', '📖 Цены']], resize_keyboard: true}})
                     return await ctx.scene.leave('getstopchan')
                 });
             }
         }
-        await ctx.reply('Данного канала нет в вашем списке задач.')
+        await ctx.reply('Данного канала нет в вашем списке задач.', {reply_markup: {keyboard: [['📰 Мой профиль', '💳 Пополнить'],
+        ['🛒 Заказать', '🔴 Мои заказы', '📖 Цены']], resize_keyboard: true}})
         return await ctx.scene.leave('getstopchan')
     } catch (e) {
         console.error(e);
@@ -232,7 +240,7 @@ getstopchan.on('text', async ctx => {
 const getstartchan = new Scenes.BaseScene("getstartchan");
 getstartchan.enter(async ctx => {
     try {
-        return await ctx.reply('Введите юзернейм канала, пример - @mygroupname:');
+        return await ctx.reply('Введите юзернейм канала, пример - @mygroupname:', {reply_markup: {keyboard: [['Отменить 🔴']],  resize_keyboard: true}});
     } catch (e) {
         console.error(e);
     }
@@ -240,6 +248,11 @@ getstartchan.enter(async ctx => {
 
 getstartchan.on('text', async ctx => {
     try {
+        if (ctx.message.text == 'Отменить 🔴') {
+            await ctx.reply('Отменено.', {reply_markup: {keyboard: [['📰 Мой профиль', '💳 Пополнить'],
+            ['🛒 Заказать', '🔴 Мои заказы', '📖 Цены']], resize_keyboard: true}})
+            return await ctx.scene.leave('getstartchan')
+        }
         const text = await ctx.message.text.replace(/[^a-zа-яё@_]/gi, '');
         if (text[0] != '@') return await ctx.reply('Пожалуйста, можете предоставить информацию, как на следующем примере:\n\nПример: @mygroupname');
         const channel = await bot.telegram.getChat(text);
@@ -260,17 +273,20 @@ getstartchan.on('text', async ctx => {
             
                 await axios(config)
                 .then(async response => {
-                    await ctx.reply('Просмотры активированы.')
+                    await ctx.reply('Просмотры активированы.', {reply_markup: {keyboard: [['📰 Мой профиль', '💳 Пополнить'],
+                    ['🛒 Заказать', '🔴 Мои заказы', '📖 Цены']], resize_keyboard: true}})
                     return await ctx.scene.leave('getstartchan')
                 })
                 .catch(async error => {
                     console.log(error);
-                    await ctx.reply('Что-то пошло не так...')
+                    await ctx.reply('Что-то пошло не так...', {reply_markup: {keyboard: [['📰 Мой профиль', '💳 Пополнить'],
+                    ['🛒 Заказать', '🔴 Мои заказы', '📖 Цены']], resize_keyboard: true}})
                     return await ctx.scene.leave('getstartchan')
                 });
             }
         }
-        await ctx.reply('Данного канала нет в вашем списке задач.')
+        await ctx.reply('Данного канала нет в вашем списке задач.', {reply_markup: {keyboard: [['📰 Мой профиль', '💳 Пополнить'],
+        ['🛒 Заказать', '🔴 Мои заказы', '📖 Цены']], resize_keyboard: true}})
         return await ctx.scene.leave('getstartchan')
     } catch (e) {
         console.error(e);
