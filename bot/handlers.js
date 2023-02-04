@@ -5,33 +5,6 @@ const linkToChanel = 'https://t.me/viewik_info'; // Ссылка на канал
 const axios = require('axios');
 const { enter, leave } = Scenes.Stage;
 
-
-/* setTimeout(async () => {
-    const config = await {
-        method: 'post',
-        url: ' https://smmboost.ru/api/task-price?token=d390434cd6f3da3ca018e061b650a513', //786a2cacd20944ec548da0ac6ed472e2
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        data: {
-            type: 2,
-            daysCount: 7,
-            postsCount: 17,
-            postViewsCount: 2500,
-            speedMax: 100,
-            speddMin: 100
-        }
-    };
-
-    await axios(config)
-    .then(response => {
-        console.log(response.data);
-    })
-    .catch(error => {
-        console.log(error);
-    });
-}, 1); */
-
 const moneytopup = new Scenes.BaseScene("moneytopup");
 moneytopup.enter(async ctx => {
     try {
@@ -206,7 +179,7 @@ getstopchan.on('text', async ctx => {
             if(udb.uorders[i].chanel == text) {
                 const config = await {
                     method: 'post',
-                    url: 'https://smmboost.ru/api/task-stop?token=786a2cacd20944ec548da0ac6ed472e2', //786a2cacd20944ec548da0ac6ed472e2
+                    url: `https://smmboost.ru/api/task-stop?token=${process.env.BOT_TOKEN}`, 
                     headers: {
                         'Content-Type': 'application/json'
                     },
@@ -262,7 +235,7 @@ getstartchan.on('text', async ctx => {
             if(udb.uorders[i].chanel == text) {
                 const config = await {
                     method: 'post',
-                    url: 'https://smmboost.ru/api/task-start?token=786a2cacd20944ec548da0ac6ed472e2', //786a2cacd20944ec548da0ac6ed472e2
+                    url: `https://smmboost.ru/api/task-start?token=${process.env.BOT_TOKEN}`, 
                     headers: {
                         'Content-Type': 'application/json'
                     },
@@ -391,7 +364,7 @@ getdays.action('buy', async ctx => {
 
                 const config = await {
                     method: 'post',
-                    url: ' https://smmboost.ru/api/views-task-add?token=786a2cacd20944ec548da0ac6ed472e2', //786a2cacd20944ec548da0ac6ed472e2
+                    url: `https://smmboost.ru/api/views-task-add?token=${process.env.SMMBOOSTTOKEN}`, 
                     headers: {
                         'Content-Type': 'application/json'
                     },
@@ -440,7 +413,7 @@ getdays.action('buy', async ctx => {
 
                 const config = await {
                     method: 'post',
-                    url: ' https://smmboost.ru/api/views-task-add?token=786a2cacd20944ec548da0ac6ed472e2', //786a2cacd20944ec548da0ac6ed472e2
+                    url: `https://smmboost.ru/api/views-task-add?token=${process.env.SMMBOOSTTOKEN}`, 
                     headers: {
                         'Content-Type': 'application/json'
                     },
@@ -487,7 +460,7 @@ getdays.action('buy', async ctx => {
 
                 const config = await {
                     method: 'post',
-                    url: ' https://smmboost.ru/api/views-task-add?token=786a2cacd20944ec548da0ac6ed472e2', //786a2cacd20944ec548da0ac6ed472e2
+                    url: `https://smmboost.ru/api/views-task-add?token=${process.env.SMMBOOSTTOKEN}`, 
                     headers: {
                         'Content-Type': 'application/json'
                     },
@@ -536,7 +509,7 @@ getdays.action('buy', async ctx => {
 
                 const config = await {
                     method: 'post',
-                    url: ' https://smmboost.ru/api/views-task-add?token=786a2cacd20944ec548da0ac6ed472e2', //786a2cacd20944ec548da0ac6ed472e2
+                    url: `https://smmboost.ru/api/views-task-add?token=${process.env.SMMBOOSTTOKEN}`, 
                     headers: {
                         'Content-Type': 'application/json'
                     },
@@ -583,7 +556,7 @@ getdays.action('buy', async ctx => {
 
                 const config = await {
                     method: 'post',
-                    url: ' https://smmboost.ru/api/views-task-add?token=786a2cacd20944ec548da0ac6ed472e2', //786a2cacd20944ec548da0ac6ed472e2
+                    url: `https://smmboost.ru/api/views-task-add?token=${process.env.SMMBOOSTTOKEN}`, 
                     headers: {
                         'Content-Type': 'application/json'
                     },
@@ -630,7 +603,7 @@ getdays.action('buy', async ctx => {
 
                 const config = await {
                     method: 'post',
-                    url: ' https://smmboost.ru/api/views-task-add?token=786a2cacd20944ec548da0ac6ed472e2', //786a2cacd20944ec548da0ac6ed472e2
+                    url: `https://smmboost.ru/api/views-task-add?token=${process.env.SMMBOOSTTOKEN}`, 
                     headers: {
                         'Content-Type': 'application/json'
                     },
@@ -679,7 +652,7 @@ getdays.action('buy', async ctx => {
 
                 const config = await {
                     method: 'post',
-                    url: ' https://smmboost.ru/api/views-task-add?token=786a2cacd20944ec548da0ac6ed472e2', //786a2cacd20944ec548da0ac6ed472e2
+                    url: `https://smmboost.ru/api/views-task-add?token=${process.env.SMMBOOSTTOKEN}`, 
                     headers: {
                         'Content-Type': 'application/json'
                     },
@@ -726,7 +699,7 @@ getdays.action('buy', async ctx => {
 
                 const config = await {
                     method: 'post',
-                    url: ' https://smmboost.ru/api/views-task-add?token=786a2cacd20944ec548da0ac6ed472e2', //786a2cacd20944ec548da0ac6ed472e2
+                    url: `https://smmboost.ru/api/views-task-add?token=${process.env.SMMBOOSTTOKEN}`, 
                     headers: {
                         'Content-Type': 'application/json'
                     },
@@ -773,7 +746,7 @@ getdays.action('buy', async ctx => {
 
                 const config = await {
                     method: 'post',
-                    url: ' https://smmboost.ru/api/views-task-add?token=786a2cacd20944ec548da0ac6ed472e2', //786a2cacd20944ec548da0ac6ed472e2
+                    url: `https://smmboost.ru/api/views-task-add?token=${process.env.SMMBOOSTTOKEN}`, 
                     headers: {
                         'Content-Type': 'application/json'
                     },
