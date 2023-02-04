@@ -8,7 +8,7 @@ const { enter, leave } = Scenes.Stage;
 const moneytopup = new Scenes.BaseScene("moneytopup");
 moneytopup.enter(async ctx => {
     try {
-        return await ctx.reply('Введите жалаемую сумму для пополнения:', Markup.keyboard([['Отменить пополнение']]).resize());
+        return await ctx.reply('Введите жалаемую сумму для пополнения:', Markup.keyboard([['Отменить пополнение 🔴']]).resize());
     } catch (e) {
         console.error(e);
     }
@@ -16,6 +16,10 @@ moneytopup.enter(async ctx => {
 
 moneytopup.on('text', async ctx => {
     try {
+        if(ctx.message.text == 'Отменить пополнение 🔴') {
+            await ctx.reply('Отменено.')
+            await ctx.scene.leave('moneytopup')
+        }
         const num = Number(ctx.message.text.replace(/[^\d]/g, ''));
         console.log(num);
         const chekn = num.toString();
@@ -23,12 +27,6 @@ moneytopup.on('text', async ctx => {
         if(chekn[0] <= '0') {
             await ctx.reply('Невозможно пополнить счет нулевой или отрицательной суммой.');
             return await ctx.scene.enter('moneytopup');
-        }else if(ctx.message.text == 'Отменить пополнение'){
-            await ctx.reply('Отменено.', Markup.keyboard([
-                ['📰 Мой профиль', '💳 Пополнить'],
-                ['🛒 Заказать', '🔴 Мои заказы', '📖 Цены']
-            ]).resize());
-            return await ctx.scene.leave('moneytopup')
         }else {
             await ctx.reply('ОК');
             // timeouttopay
@@ -1300,25 +1298,6 @@ bot.hears(['📖 Цены'], async ctx => {
         const admDB = await collection.findOne({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')})
         if (userDB.value == "WAITING") return await ctx.reply('Вы ещё не закончили пополнение, вы можете отменить пополнение нажав на кнопку отмены.')
         return await ctx.reply(`🏦 Цены 🏦\nАвтопросмотры на все новые записи.\n\n👁‍🗨 Тариф - 1\nЦелевое количество просмотров: 2500 за день\nСкорость за час: +100 просмотров\nКол-во дней:\n📕 7 дней - ${admDB.t17} руб\n📗 14 дней - ${admDB.t114} руб\n📘 30 дней - ${admDB.t130} руб\n\n👁‍🗨 Тариф - 2\nЦелевое количество просмотров: 6000 за день\nСкорость за час: +250 просмотров\nКол-во дней:\n📕 7 дней - ${admDB.t27} руб\n📗 14 дней - ${admDB.t214} руб\n📘 30 дней - ${admDB.t230} руб\n\n👁‍🗨 Тариф - 3\nЦелевое количество просмотров: 12000 за день\nСкорость за час: +500 просмотров\nКол-во дней:\n📕 7 дней - ${admDB.t37} руб\n📗 14 дней - ${admDB.t314} руб\n📘 30 дней - ${admDB.t330} руб`);
-    } catch (e) {
-        console.error(e);
-    }
-});
-
-
-bot.hears(['Отменить пополнение'], async ctx => {
-    try {
-        const userDB = await collection.findOne({user_id: ctx.from.id});
-        await collection.findOneAndUpdate({user_id: ctx.from.id}, {$set: {value: 'chilling'}})
-        await collection.findOneAndUpdate({_id: ObjectId('63ccf9660394ae88ef1ad14b')}, {$pull: {newbills: {bill_id: userDB.user_bill}}})
-        if (userDB.value == "WAITING") {
-            await qiwiApi.cancelBill(userDB.user_bill).then(data => console.log(data.status.value)).catch(e => console.error(e))
-            await ctx.deleteMessage(userDB.invoice)
-        }
-        return await ctx.reply('Отменено.', Markup.keyboard([
-            ['📰 Мой профиль', '💳 Пополнить'],
-            ['🛒 Заказать', '🔴 Мои заказы', '📖 Цены']
-        ]).resize());
     } catch (e) {
         console.error(e);
     }
