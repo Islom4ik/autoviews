@@ -51,7 +51,6 @@ setInterval(async () => {
             const bill_id = await arrwbills.newbills[i].bill_id; 
 
             await qiwiApi.getBillInfo(bill_id).then(async data => {
-                console.log(data);
                 if (data.status.value == "WAITING") {
                     const userdb = await collection.findOne({user_bill: bill_id})
                     if(userdb.minins <= 0) {
@@ -61,7 +60,7 @@ setInterval(async () => {
                         await collection.findOneAndUpdate({_id: ObjectId('63ccf9660394ae88ef1ad14b')}, {$pull: {newbills: {bill_id: bill_id}}})
                         return await collection.findOneAndUpdate({user_bill: bill_id}, {$set: {value: "chilling"}})
                     }else {
-                        const res = userdb.minins - 5;
+                        const res = userdb.minins - 10;
                         return await collection.findOneAndUpdate({user_bill: bill_id}, {$set: {minins: res}})
                     }
                 } else if(data.status.value == "PAID") {
@@ -86,7 +85,7 @@ setInterval(async () => {
     } catch (e) {
         console.error(e);
     }
-}, 5000);
+}, 10000);
 
 bot.launch({dropPendingUpdates: true});
 process.once('SIGINT', () => bot.stop('SIGINT'));
