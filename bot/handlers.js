@@ -17,7 +17,8 @@ moneytopup.enter(async ctx => {
 moneytopup.on('text', async ctx => {
     try {
         if(ctx.message.text == 'Отменить пополнение 🔴') {
-            await ctx.reply('Отменено.')
+            await ctx.reply('Отменено.', {reply_markup: {keyboard: [['📰 Мой профиль', '💳 Пополнить'],
+            ['🛒 Заказать', '🔴 Мои заказы', '📖 Цены']], resize_keyboard: true}})
             return await ctx.scene.leave('moneytopup')
         }
         const num = Number(ctx.message.text.replace(/[^\d]/g, ''));
