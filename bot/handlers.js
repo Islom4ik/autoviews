@@ -390,7 +390,7 @@ getdays.action('buy', async ctx => {
                     await collection.findOneAndUpdate({user_id: ctx.from.id}, {$set: {moneyc: usrm}});
                     await collection.findOneAndUpdate({user_id: userdb.user_id}, {$push: {uorders: response.data.result.id}})
                     await collection.findOneAndUpdate({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}, {$push: {viewsarr: {orid: response.data.result.id, chanel: userdb.chanelinf.username}}})
-                    return await ctx.reply('Успех! Проверьте список заказов.')
+                    return await ctx.reply('🟢 Успех! Проверьте список заказов.')
                 })
                 .catch(error => {
                     console.log(error);
@@ -438,7 +438,7 @@ getdays.action('buy', async ctx => {
                     await collection.findOneAndUpdate({user_id: ctx.from.id}, {$set: {moneyc: usrm}});
                     await collection.findOneAndUpdate({user_id: userdb.user_id}, {$push: {uorders: response.data.result.id}})
                     await collection.findOneAndUpdate({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}, {$push: {viewsarr: {orid: response.data.result.id, chanel: userdb.chanelinf.username}}})
-                    return await ctx.reply('Успех! Проверьте список заказов.')
+                    return await ctx.reply('🟢 Успех! Проверьте список заказов.')
                 })
                 .catch(error => {
                     return ctx.reply('Что-то пошло не так...')
@@ -485,7 +485,7 @@ getdays.action('buy', async ctx => {
                     await collection.findOneAndUpdate({user_id: ctx.from.id}, {$set: {moneyc: usrm}});
                     await collection.findOneAndUpdate({user_id: userdb.user_id}, {$push: {uorders: response.data.result.id}})
                     await collection.findOneAndUpdate({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}, {$push: {viewsarr: {orid: response.data.result.id, chanel: userdb.chanelinf.username}}})
-                    return await ctx.reply('Успех! Проверьте список заказов.')
+                    return await ctx.reply('🟢 Успех! Проверьте список заказов.')
                 })
                 .catch(error => {
                     return ctx.reply('Что-то пошло не так...')
@@ -534,7 +534,7 @@ getdays.action('buy', async ctx => {
                     await collection.findOneAndUpdate({user_id: ctx.from.id}, {$set: {moneyc: usrm}});
                     await collection.findOneAndUpdate({user_id: userdb.user_id}, {$push: {uorders: response.data.result.id}})
                     await collection.findOneAndUpdate({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}, {$push: {viewsarr: {orid: response.data.result.id, chanel: userdb.chanelinf.username}}})
-                    return await ctx.reply('Успех! Проверьте список заказов.')
+                    return await ctx.reply('🟢 Успех! Проверьте список заказов.')
                 })
                 .catch(error => {
                     return ctx.reply('Что-то пошло не так...')
@@ -581,7 +581,7 @@ getdays.action('buy', async ctx => {
                     await collection.findOneAndUpdate({user_id: ctx.from.id}, {$set: {moneyc: usrm}});
                     await collection.findOneAndUpdate({user_id: userdb.user_id}, {$push: {uorders: response.data.result.id}})
                     await collection.findOneAndUpdate({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}, {$push: {viewsarr: {orid: response.data.result.id, chanel: userdb.chanelinf.username}}})
-                    return await ctx.reply('Успех! Проверьте список заказов.')
+                    return await ctx.reply('🟢 Успех! Проверьте список заказов.')
                 })
                 .catch(error => {
                     return ctx.reply('Что-то пошло не так...')
@@ -628,7 +628,7 @@ getdays.action('buy', async ctx => {
                     await collection.findOneAndUpdate({user_id: ctx.from.id}, {$set: {moneyc: usrm}});
                     await collection.findOneAndUpdate({user_id: userdb.user_id}, {$push: {uorders: response.data.result.id}})
                     await collection.findOneAndUpdate({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}, {$push: {viewsarr: {orid: response.data.result.id, chanel: userdb.chanelinf.username}}})
-                    return await ctx.reply('Успех! Проверьте список заказов.')
+                    return await ctx.reply('🟢 Успех! Проверьте список заказов.')
                 })
                 .catch(error => {
                     return ctx.reply('Что-то пошло не так...')
@@ -677,7 +677,7 @@ getdays.action('buy', async ctx => {
                     await collection.findOneAndUpdate({user_id: ctx.from.id}, {$set: {moneyc: usrm}});
                     await collection.findOneAndUpdate({user_id: userdb.user_id}, {$push: {uorders: response.data.result.id}})
                     await collection.findOneAndUpdate({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}, {$push: {viewsarr: {orid: response.data.result.id, chanel: userdb.chanelinf.username}}})
-                    return await ctx.reply('Успех! Проверьте список заказов.')
+                    return await ctx.reply('🟢 Успех! Проверьте список заказов.')
                 })
                 .catch(error => {
                     return ctx.reply('Что-то пошло не так...')
@@ -724,7 +724,7 @@ getdays.action('buy', async ctx => {
                     await collection.findOneAndUpdate({user_id: ctx.from.id}, {$set: {moneyc: usrm}});
                     await collection.findOneAndUpdate({user_id: userdb.user_id}, {$push: {uorders: response.data.result.id}})
                     await collection.findOneAndUpdate({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}, {$push: {viewsarr: {orid: response.data.result.id, chanel: userdb.chanelinf.username}}})
-                    return await ctx.reply('Успех! Проверьте список заказов.')
+                    return await ctx.reply('🟢 Успех! Проверьте список заказов.')
                 })
                 .catch(error => {
                     return ctx.reply('Что-то пошло не так...')
