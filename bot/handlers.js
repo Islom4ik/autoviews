@@ -23,11 +23,13 @@ moneytopup.on('text', async ctx => {
         }
 
         if(ctx.message.text == 'Отменить пополнение 🟠') {
+            await ctx.reply('Отмена...', {reply_markup: {remove_keyboard: true}})
             const userDB = await collection.findOne({user_id: ctx.from.id})
             await collection.findOneAndUpdate({_id: ObjectId('63ccf9660394ae88ef1ad14b')}, {$pull: {newbills: {bill_id: userDB.user_bill}}})
             await qiwiApi.cancelBill(userDB.user_bill).then(data => console.log(data.status.value)).catch(err => console.log('err'))
             await ctx.reply('Отменено.', {reply_markup: {keyboard: [['📰 Мой профиль', '💳 Пополнить'],
             ['🛒 Заказать', '🔴 Мои заказы', '📖 Цены']], resize_keyboard: true}})
+            await collection.findOneAndUpdate({user_id: ctx.from.id}, {$set: {value: "chilling"}})
             return await ctx.scene.leave('moneytopup')
         }
         const searchString = /[\_\!\@\#\№\"\;\$\%\^\:\&\?\*\(\)\{\}\[\]\?\/\,\\\|\/\+\-\=\a-z\а-я]+/g;
