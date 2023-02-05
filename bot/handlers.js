@@ -21,14 +21,25 @@ moneytopup.on('text', async ctx => {
             ['🛒 Заказать', '🔴 Мои заказы', '📖 Цены']], resize_keyboard: true}})
             return await ctx.scene.leave('moneytopup')
         }
-        const num = Number(ctx.message.text.replace(/[^\d]/g, ''));
+
+        if(ctx.message.text == 'Отменить пополнение 🟠') {
+            const userDB = await collection.findOne({user_id: ctx.from.id})
+            await collection.findOneAndUpdate({_id: ObjectId('63ccf9660394ae88ef1ad14b')}, {$pull: {newbills: {bill_id: userDB.user_bill}}})
+            await qiwiApi.cancelBill(userDB.user_bill).then(data => console.log(data.status.value)).catch(err => console.log('err'))
+            await ctx.reply('Отменено.', {reply_markup: {keyboard: [['📰 Мой профиль', '💳 Пополнить'],
+            ['🛒 Заказать', '🔴 Мои заказы', '📖 Цены']], resize_keyboard: true}})
+            return await ctx.scene.leave('moneytopup')
+        }
+        const searchString = /[\_\!\@\#\№\"\;\$\%\^\:\&\?\*\(\)\{\}\[\]\?\/\,\\\|\/\+\-\=\a-z\а-я]+/g;
+        if (ctx.message.text.match(searchString)) return await ctx.reply('Невозможно пополнить счет нулевой или отрицательной суммой.\nВведите сумму для пополнения:');
+        const num = ctx.message.text;
         const chekn = num.toString();
         console.log(chekn);
-        if(chekn[0] <= '0') {
+        if(chekn[0] < '1') {
             await ctx.reply('Невозможно пополнить счет нулевой или отрицательной суммой.');
             return await ctx.scene.enter('moneytopup');
         }else {
-            await ctx.reply('ОК');
+            await ctx.reply('ОК', {reply_markup: {keyboard: [['Отменить пополнение 🟠']], resize_keyboard: true}});
             // timeouttopay
             const date = await new Date();
             await date.setMinutes(date.getMinutes() + 10);
@@ -54,7 +65,6 @@ moneytopup.on('text', async ctx => {
                 [Markup.button.url('QIWI | CARD', link)]
             ]));
             await collection.findOneAndUpdate({user_id: ctx.from.id}, {$set: {invoice: invoice.message_id}})
-            return await ctx.scene.leave('moneytopup')
         }
     } catch (e) {
         console.error(e);

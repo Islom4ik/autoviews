@@ -69,12 +69,14 @@ setInterval(async () => {
                     await collection.findOneAndUpdate({_id: ObjectId('63ccf9660394ae88ef1ad14b')}, {$pull: {newbills: {bill_id: bill_id}}})
                     const succsesbill = await collection.findOne({user_bill: bill_id})
                     await bot.telegram.deleteMessage(succsesbill.user_id, succsesbill.invoice);
-                    await collection.findOneAndUpdate({user_bill: bill_id}, {$set: {moneyc: data.amount.value}})
+                    const userDB = await collection.findOne({user_bill: bill_id})
+                    const res = await Number(userDB.moneyc) + Number(data.amount.value)
+                    await collection.findOneAndUpdate({user_bill: bill_id}, {$set: {moneyc: res}})
                     await bot.telegram.sendMessage(succsesbill.user_id, 'Успешное пополнение 🟢', {reply_markup: {keyboard: [['📰 Мой профиль','💳 Пополнить'], ['🛒 Заказать', '🔴 Мои заказы', '📖 Цены']], resize_keyboard: true}})
                     const ordc = await collection.findOne({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')})
                     const rss = await Number(ordc.ordersc) + 1;
                     await collection.findOneAndUpdate({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}, {$set: {ordersc: `${rss}`}})
-                    const admdb = await collection.findOne({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}); const money = `${Number(admdb.moneyget)+data.amount.value}`; await collection.findOneAndUpdate({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}, {$set: {moneyget: money}});
+                    const admdb = await collection.findOne({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}); const money = `${Number(admdb.moneyget)+ Number(data.amount.value)}`; await collection.findOneAndUpdate({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}, {$set: {moneyget: `${money}`}});
                     await collection.findOneAndUpdate({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}, {$push: {orders: data}})
                     await collection.findOneAndUpdate({user_bill: bill_id}, {$push: {paid: bill_id}})
                     return await collection.findOneAndUpdate({user_bill: bill_id}, {$set: {value: "chilling"}})
