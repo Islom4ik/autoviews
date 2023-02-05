@@ -26,6 +26,7 @@ moneytopup.on('text', async ctx => {
             await ctx.reply('Отмена...', {reply_markup: {remove_keyboard: true}})
             const userDB = await collection.findOne({user_id: ctx.from.id})
             await collection.findOneAndUpdate({_id: ObjectId('63ccf9660394ae88ef1ad14b')}, {$pull: {newbills: {bill_id: userDB.user_bill}}})
+            await ctx.deleteMessage(userDB.invoice)
             await qiwiApi.cancelBill(userDB.user_bill).then(data => console.log(data.status.value)).catch(err => console.log('err'))
             await ctx.reply('Отменено.', {reply_markup: {keyboard: [['📰 Мой профиль', '💳 Пополнить'],
             ['🛒 Заказать', '🔴 Мои заказы', '📖 Цены']], resize_keyboard: true}})
