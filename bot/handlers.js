@@ -1333,6 +1333,7 @@ bot.hears(['🛒 Заказать'], async ctx => {
 bot.hears(['📋 Список заказов'], async ctx => {
     try {
         const userDB = await collection.findOne({user_id: ctx.from.id})
+        if (userDB.value == "WAITING") return await ctx.reply('Вы ещё не закончили пополнение, вы можете отменить пополнение нажав на кнопку отмены.');
         if (userDB.uorders.length == 0) return await ctx.reply('У вас нет активных заказов.')
         for (let i = 0; i < userDB.uorders.length; i++) {
             await ctx.reply(`Канал: @${userDB.uorders[i].chanel}\n\nId заказа: ${userDB.uorders[i].orid}`)
@@ -1345,6 +1346,7 @@ bot.hears(['📋 Список заказов'], async ctx => {
 bot.hears(['⏸ Приостановить'], async ctx => {
     try {
         const userDB = await collection.findOne({user_id: ctx.from.id})
+        if (userDB.value == "WAITING") return await ctx.reply('Вы ещё не закончили пополнение, вы можете отменить пополнение нажав на кнопку отмены.');
         await ctx.scene.enter('getstopchan')
     } catch (e) {
         console.error(e);
@@ -1354,6 +1356,7 @@ bot.hears(['⏸ Приостановить'], async ctx => {
 bot.hears(['▶️ Возобновить'], async ctx => {
     try {
         const userDB = await collection.findOne({user_id: ctx.from.id})
+        if (userDB.value == "WAITING") return await ctx.reply('Вы ещё не закончили пополнение, вы можете отменить пополнение нажав на кнопку отмены.');
         await ctx.scene.enter('getstartchan')
     } catch (e) {
         console.error(e);
