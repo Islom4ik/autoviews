@@ -1144,6 +1144,10 @@ getuserdb.enter(async ctx => {
 
 getuserdb.on('text', async ctx => {
     try {
+        if (ctx.message.text == 'Отменить поиск 🔴') {
+            await ctx.reply('Отменено.', {reply_markup: {keyboard: [['Редактировать цены тарифов 📝', 'Управление пользователями 👤'],['Статистика 📈', 'История 🗂'], ['🏠 Назад на главное меню']], resize_keyboard: true}})
+            return ctx.scene.leave('getuserdb')
+        }
         const admdb = await collection.findOne({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')})
         if (admdb.met == 'none') {
             return ctx.reply('Нажмите на одну из кнопок выше ⬆️')
@@ -1153,7 +1157,7 @@ getuserdb.on('text', async ctx => {
             const searchString = /[\!\#\№\"\;\$\%\^\:\&\?\*\(\)\{\}\[\]\?\/\,.\\\|\/\+\=]+/g;
             if (ctx.message.text.match(searchString)) return await ctx.reply('Введите данные как на приведенном примере выше ⬆️');
             if(text[0] != '@') return ctx.reply('Введите данные как на приведенном примере выше ⬆️')
-            await ctx.reply('Поиск...')
+            await ctx.reply('Поиск...', {reply_markup: {remove_keyboard: true}})
             const user = await collection.findOne({user_name: text})
             if(user == null) return ctx.reply('Пользователь не найден.')
             let newar = []
@@ -1167,7 +1171,7 @@ getuserdb.on('text', async ctx => {
             return await ctx.reply(`Найден пользователь по запросу: ${text}\n\nИмя: ${user.user_fname}\nUsername: ${user.user_name}\nId: ${user.accountid}\nUser Id: ${user.user_id}\n\nБаланс: ${user.moneyc}₽\nПополнения(bill ids):\n${str}`, {reply_markup: {inline_keyboard: [[Markup.button.callback('Изменить баланс пользователя 📝', 'editusmoneyc')], [Markup.button.callback('Назад ↩️', 'backtoadm')]]}})
         } else {
             const text = ctx.message.text
-            await ctx.reply('Поиск...')
+            await ctx.reply('Поиск...', {reply_markup: {remove_keyboard: true}})
             const user = await collection.findOne({user_fname: text})
             if(user == null) return ctx.reply('Пользователь не найден.')
             let newar = []
@@ -1189,7 +1193,7 @@ getuserdb.action('byusn', async ctx => {
     try {
         await collection.findOneAndUpdate({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}, {$set: {met: 'byusn'}})
         await ctx.deleteMessage(ctx.callbackQuery.message.message_id)
-        await ctx.reply('Введите username(@myusername) пользователя:')
+        await ctx.reply('Введите username(@myusername) пользователя:', {reply_markup: {keyboard: [['Отменить поиск 🔴']], resize_keyboard: true}})
         await ctx.answerCbQuery()
     } catch (e) {
         console.error(e);
@@ -1200,7 +1204,7 @@ getuserdb.action('byn', async ctx => {
     try {
         await collection.findOneAndUpdate({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}, {$set: {met: 'byn'}})
         await ctx.deleteMessage(ctx.callbackQuery.message.message_id)
-        await ctx.reply('Введите имя(Мое имя) пользователя:')
+        await ctx.reply('Введите имя(Мое имя) пользователя:', {reply_markup: {keyboard: [['Отменить поиск 🔴']], resize_keyboard: true}})
         await ctx.answerCbQuery()
     } catch (e) {
         console.error(e);
@@ -1273,7 +1277,7 @@ bot.hears(['📰 Мой профиль'], async ctx => {
     try {
         const userDB = await collection.findOne({user_id: ctx.from.id})
         if(userDB.user_fname != ctx.from.first_name) await collection.findOneAndUpdate({user_id: ctx.from.id}, {$set: {user_fname: ctx.from.first_name}})
-        if(userDB.user_name != ctx.from.username) await collection.findOneAndUpdate({user_id: ctx.from.id}, {$set: {user_name: ctx.from.username}})
+        if(userDB.user_name != ctx.from.username) await collection.findOneAndUpdate({user_id: ctx.from.id}, {$set: {user_name: `@${ctx.from.username}`}})
         if (userDB.value == "WAITING") return await ctx.reply('Вы ещё не закончили пополнение, вы можете отменить пополнение нажав на кнопку отмены.')
         return ctx.replyWithHTML(`📰 Ваш профиль\n├💰 Баланс: ${userDB.moneyc} руб.\n└🆔 ID: <code>${userDB.accountid}</code>\nПодпишись на наш <a href="${linkToChanel}">канал</a> и будь в курсе всех изменений.`);
     } catch (e) {
@@ -1294,7 +1298,7 @@ bot.hears(['📖 Цены'], async ctx => {
     try {
         const userDB = await collection.findOne({user_id: ctx.from.id})
         if(userDB.user_fname != ctx.from.first_name) await collection.findOneAndUpdate({user_id: ctx.from.id}, {$set: {user_fname: ctx.from.first_name}})
-        if(userDB.user_name != ctx.from.username) await collection.findOneAndUpdate({user_id: ctx.from.id}, {$set: {user_name: ctx.from.username}})
+        if(userDB.user_name != ctx.from.username) await collection.findOneAndUpdate({user_id: ctx.from.id}, {$set: {user_name: `@${ctx.from.username}`}})
         const admDB = await collection.findOne({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')})
         if (userDB.value == "WAITING") return await ctx.reply('Вы ещё не закончили пополнение, вы можете отменить пополнение нажав на кнопку отмены.')
         return await ctx.reply(`🏦 Цены 🏦\nАвтопросмотры на все новые записи.\n\n👁‍🗨 Тариф - 1\nЦелевое количество просмотров: 2500 за день\nСкорость за час: +100 просмотров\nКол-во дней:\n📕 7 дней - ${admDB.t17} руб\n📗 14 дней - ${admDB.t114} руб\n📘 30 дней - ${admDB.t130} руб\n\n👁‍🗨 Тариф - 2\nЦелевое количество просмотров: 6000 за день\nСкорость за час: +250 просмотров\nКол-во дней:\n📕 7 дней - ${admDB.t27} руб\n📗 14 дней - ${admDB.t214} руб\n📘 30 дней - ${admDB.t230} руб\n\n👁‍🗨 Тариф - 3\nЦелевое количество просмотров: 12000 за день\nСкорость за час: +500 просмотров\nКол-во дней:\n📕 7 дней - ${admDB.t37} руб\n📗 14 дней - ${admDB.t314} руб\n📘 30 дней - ${admDB.t330} руб`);
