@@ -82,7 +82,7 @@ setInterval(async () => {
                     return await collection.findOneAndUpdate({user_bill: bill_id}, {$set: {value: "chilling"}})
 
                 }else {
-                    return
+                    console.log('REJECTED DATA');
                 }
             }).catch(err => console.log('error'));
             continue;
