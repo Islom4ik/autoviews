@@ -386,7 +386,7 @@ getdays.action('buy', async ctx => {
                 await axios(config)
                 .then(async response => {
                     console.log(response);
-                    const usrm = await String(usermoney - admdb.t17);
+                    const usrm = await String(usermoney - Number(admdb.t17));
                     await collection.findOneAndUpdate({user_id: ctx.from.id}, {$set: {moneyc: usrm}});
                     await collection.findOneAndUpdate({user_id: userdb.user_id}, {$push: {uorders: response.result.id}})
                     await collection.findOneAndUpdate({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}, {$push: {viewsarr: {orid: response.result.id, chanel: userdb.chanelinf.username}}})
@@ -434,7 +434,7 @@ getdays.action('buy', async ctx => {
             
                 await axios(config)
                 .then(async response => {
-                    const usrm = await String(usermoney - admdb.t114);
+                    const usrm = await String(usermoney - Number(admdb.t114));
                     await collection.findOneAndUpdate({user_id: ctx.from.id}, {$set: {moneyc: usrm}});
                     await collection.findOneAndUpdate({user_id: userdb.user_id}, {$push: {uorders: response.result.id}})
                     await collection.findOneAndUpdate({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}, {$push: {viewsarr: {orid: response.result.id, chanel: userdb.chanelinf.username}}})
@@ -481,7 +481,7 @@ getdays.action('buy', async ctx => {
             
                 await axios(config)
                 .then(async response => {
-                    const usrm = await String(usermoney - admdb.t130);
+                    const usrm = await String(usermoney - Number(admdb.t130));
                     await collection.findOneAndUpdate({user_id: ctx.from.id}, {$set: {moneyc: usrm}});
                     await collection.findOneAndUpdate({user_id: userdb.user_id}, {$push: {uorders: response.result.id}})
                     await collection.findOneAndUpdate({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}, {$push: {viewsarr: {orid: response.result.id, chanel: userdb.chanelinf.username}}})
@@ -530,7 +530,7 @@ getdays.action('buy', async ctx => {
             
                 await axios(config)
                 .then(async response => {
-                    const usrm = await String(usermoney - admdb.t27);
+                    const usrm = await String(usermoney - Number(admdb.t27));
                     await collection.findOneAndUpdate({user_id: ctx.from.id}, {$set: {moneyc: usrm}});
                     await collection.findOneAndUpdate({user_id: userdb.user_id}, {$push: {uorders: response.result.id}})
                     await collection.findOneAndUpdate({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}, {$push: {viewsarr: {orid: response.result.id, chanel: userdb.chanelinf.username}}})
@@ -577,7 +577,7 @@ getdays.action('buy', async ctx => {
             
                 await axios(config)
                 .then(async response => {
-                    const usrm = await String(usermoney - admdb.t214);
+                    const usrm = await String(usermoney - Number(admdb.t214));
                     await collection.findOneAndUpdate({user_id: ctx.from.id}, {$set: {moneyc: usrm}});
                     await collection.findOneAndUpdate({user_id: userdb.user_id}, {$push: {uorders: response.result.id}})
                     await collection.findOneAndUpdate({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}, {$push: {viewsarr: {orid: response.result.id, chanel: userdb.chanelinf.username}}})
@@ -624,7 +624,7 @@ getdays.action('buy', async ctx => {
             
                 await axios(config)
                 .then(async response => {
-                    const usrm = await String(usermoney - admdb.t230);
+                    const usrm = await String(usermoney - Number(admdb.t230));
                     await collection.findOneAndUpdate({user_id: ctx.from.id}, {$set: {moneyc: usrm}});
                     await collection.findOneAndUpdate({user_id: userdb.user_id}, {$push: {uorders: response.result.id}})
                     await collection.findOneAndUpdate({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}, {$push: {viewsarr: {orid: response.result.id, chanel: userdb.chanelinf.username}}})
@@ -673,7 +673,7 @@ getdays.action('buy', async ctx => {
             
                 await axios(config)
                 .then(async response => {
-                    const usrm = await String(usermoney - admdb.t37);
+                    const usrm = await String(usermoney - Number(admdb.t37));
                     await collection.findOneAndUpdate({user_id: ctx.from.id}, {$set: {moneyc: usrm}});
                     await collection.findOneAndUpdate({user_id: userdb.user_id}, {$push: {uorders: response.result.id}})
                     await collection.findOneAndUpdate({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}, {$push: {viewsarr: {orid: response.result.id, chanel: userdb.chanelinf.username}}})
@@ -720,7 +720,7 @@ getdays.action('buy', async ctx => {
             
                 await axios(config)
                 .then(async response => {
-                    const usrm = await String(usermoney - admdb.t314);
+                    const usrm = await String(usermoney - Number(admdb.t314));
                     await collection.findOneAndUpdate({user_id: ctx.from.id}, {$set: {moneyc: usrm}});
                     await collection.findOneAndUpdate({user_id: userdb.user_id}, {$push: {uorders: response.result.id}})
                     await collection.findOneAndUpdate({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}, {$push: {viewsarr: {orid: response.result.id, chanel: userdb.chanelinf.username}}})
@@ -767,7 +767,7 @@ getdays.action('buy', async ctx => {
             
                 await axios(config)
                 .then(async response => {
-                    const usrm = await String(usermoney - admdb.t330);
+                    const usrm = await String(usermoney - Number(admdb.t330));
                     await collection.findOneAndUpdate({user_id: ctx.from.id}, {$set: {moneyc: usrm}});
                     await collection.findOneAndUpdate({user_id: userdb.user_id}, {$push: {uorders: response.result.id}})
                     await collection.findOneAndUpdate({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}, {$push: {viewsarr: {orid: response.result.id, chanel: userdb.chanelinf.username}}})
