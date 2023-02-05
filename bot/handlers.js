@@ -80,7 +80,9 @@ getgroup.on('text', async ctx => {
             ['🛒 Заказать', '🔴 Мои заказы', '📖 Цены']], resize_keyboard: true}})
             return ctx.scene.leave('getgroup')
         }
-        const text = await ctx.message.text.replace(/[^a-zа-яё@_]/gi, '');
+        const text = await ctx.message.text;
+        const searchString = /[\!\#\№\"\;\$\%\^\:\&\?\*\(\)\{\}\[\]\?\/\,.\\\|\/\+\-\=\а-я]+/g;
+        if (text.match(searchString)) return await ctx.reply('Допускаються символы: @, a-z, _ и 0-9\nВведите ссылку на канал:');
         if (text[0] != '@') return await ctx.reply('Пожалуйста, можете предоставить информацию, как на следующем примере:\n\nПример: @mygroupname');
         const channel = await bot.telegram.getChat(text);
         if(channel.type != 'channel') return await ctx.reply('Пожалуйста, введите user_name телеграмм канала:');
