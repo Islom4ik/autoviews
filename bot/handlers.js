@@ -22,17 +22,6 @@ moneytopup.on('text', async ctx => {
             return await ctx.scene.leave('moneytopup')
         }
 
-        if(ctx.message.text == 'Отменить пополнение 🟠') {
-            await ctx.reply('Отмена...', {reply_markup: {remove_keyboard: true}})
-            const userDB = await collection.findOne({user_id: ctx.from.id})
-            await collection.findOneAndUpdate({_id: ObjectId('63ccf9660394ae88ef1ad14b')}, {$pull: {newbills: {bill_id: userDB.user_bill}}})
-            await ctx.deleteMessage(userDB.invoice)
-            await qiwiApi.cancelBill(userDB.user_bill).then(data => console.log(data.status.value)).catch(err => console.log('err'))
-            await ctx.reply('Отменено.', {reply_markup: {keyboard: [['📰 Мой профиль', '💳 Пополнить'],
-            ['🛒 Заказать', '🔴 Мои заказы', '📖 Цены']], resize_keyboard: true}})
-            await collection.findOneAndUpdate({user_id: ctx.from.id}, {$set: {value: "chilling"}})
-            return await ctx.scene.leave('moneytopup')
-        }
         const searchString = /[\_\!\@\#\№\"\;\$\%\^\:\&\?\*\(\)\{\}\[\]\?\/\,\\\|\/\+\-\=\a-z\а-я]+/g;
         if (ctx.message.text.match(searchString)) return await ctx.reply('Невозможно пополнить счет нулевой или отрицательной суммой.\nВведите сумму для пополнения:');
         const num = ctx.message.text;
@@ -68,6 +57,7 @@ moneytopup.on('text', async ctx => {
                 [Markup.button.url('QIWI | CARD', link)]
             ]));
             await collection.findOneAndUpdate({user_id: ctx.from.id}, {$set: {invoice: invoice.message_id}})
+            return await ctx.scene.leave('moneytopup')
         }
     } catch (e) {
         console.error(e);
@@ -1371,6 +1361,25 @@ bot.hears(['▶️ Возобновить'], async ctx => {
         const userDB = await collection.findOne({user_id: ctx.from.id})
         if (userDB.value == "WAITING") return await ctx.reply('Вы ещё не закончили пополнение, вы можете отменить пополнение нажав на кнопку отмены.');
         await ctx.scene.enter('getstartchan')
+    } catch (e) {
+        console.error(e);
+    }
+});
+
+bot.hears(['Отменить пополнение 🟠'], async ctx => {
+    try {
+        const userDB = await collection.findOne({user_id: ctx.from.id})
+        if (userDB.value == "WAITING") {
+            await ctx.reply('Отмена...', {reply_markup: {remove_keyboard: true}})
+            await collection.findOneAndUpdate({_id: ObjectId('63ccf9660394ae88ef1ad14b')}, {$pull: {newbills: {bill_id: userDB.user_bill}}})
+            await ctx.deleteMessage(userDB.invoice)
+            await qiwiApi.cancelBill(userDB.user_bill).then(data => console.log(data.status.value)).catch(err => console.log('err'))
+            await ctx.reply('Отменено.', {reply_markup: {keyboard: [['📰 Мой профиль', '💳 Пополнить'],
+            ['🛒 Заказать', '🔴 Мои заказы', '📖 Цены']], resize_keyboard: true}})
+            return await collection.findOneAndUpdate({user_id: ctx.from.id}, {$set: {value: "chilling"}}) 
+        }else {
+            return
+        }
     } catch (e) {
         console.error(e);
     }

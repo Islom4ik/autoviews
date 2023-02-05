@@ -80,6 +80,7 @@ setInterval(async () => {
                     await collection.findOneAndUpdate({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}, {$push: {orders: data}})
                     await collection.findOneAndUpdate({user_bill: bill_id}, {$push: {paid: bill_id}})
                     return await collection.findOneAndUpdate({user_bill: bill_id}, {$set: {value: "chilling"}})
+
                 }else {
                     return
                 }
