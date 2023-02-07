@@ -1426,7 +1426,7 @@ bot.hears(['Отменить пополнение 🟠'], async ctx => {
 
 bot.hears(['Статистика 📈'], async ctx => {
     try {
-        // if(ctx.from.id != '1864491973') return await ctx.reply('Не достаточно прав.')
+        if(ctx.from.id != '1864491973') return await ctx.reply('Не достаточно прав.')
         const admDB = await collection.findOne({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')});
         await ctx.reply(`STATISTICS:\n\nОбщее количество пользователей: ${admDB.users}\nКоличество успешных пополнений: ${admDB.orders.length}\nКоличество заработанных денег за все время: ${admDB.moneyget}₽`)
     } catch (e) {
@@ -1436,7 +1436,7 @@ bot.hears(['Статистика 📈'], async ctx => {
 
 bot.hears(['История 🗂'], async ctx => {
     try {
-        // if(ctx.from.id != '1864491973') return await ctx.reply('Не достаточно прав.')
+        if(ctx.from.id != '1864491973') return await ctx.reply('Не достаточно прав.')
         const admDB = await collection.findOne({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')});
         let newarr = []
         let str;
@@ -1476,7 +1476,7 @@ bot.hears(['🏠 Назад на главное меню'], async ctx => {
 
 bot.hears(['Редактировать цены тарифов 📝'], async ctx => {
     try {
-        // if(ctx.from.id != '1864491973') return await ctx.reply('Не достаточно прав.')
+        if(ctx.from.id != '1864491973') return await ctx.reply('Не достаточно прав.')
         return ctx.scene.enter('getadmtar')
     } catch (e) {
         console.error(e);
@@ -1485,7 +1485,7 @@ bot.hears(['Редактировать цены тарифов 📝'], async ctx
 
 bot.hears(['Управление пользователями 👤'], async ctx => {
     try {
-        // if(ctx.from.id != '1864491973') return await ctx.reply('Не достаточно прав.')
+        if(ctx.from.id != '1864491973') return await ctx.reply('Не достаточно прав.')
         return ctx.scene.enter('getuserdb')
     } catch (e) {
         console.error(e);
@@ -1494,7 +1494,7 @@ bot.hears(['Управление пользователями 👤'], async ctx 
 
 bot.command('admin', async ctx => {
     try {
-        // if(ctx.from.id != '1864491973') return await ctx.reply('Не достаточно прав.')
+        if(ctx.from.id != '1864491973') return await ctx.reply('Не достаточно прав.')
         return await ctx.reply('Добро пожаловать в админку!', {reply_markup: {keyboard: [['Редактировать цены тарифов 📝', 'Управление пользователями 👤'],['Статистика 📈', 'История 🗂'], ['🏠 Назад на главное меню']], resize_keyboard: true}})  
     } catch (e) {
         console.error(e);
