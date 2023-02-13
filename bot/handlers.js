@@ -1192,7 +1192,7 @@ getuserdb.on('text', async ctx => {
             if(text[0] != '@') return ctx.reply('Введите данные как на приведенном примере выше ⬆️')
             await ctx.reply('Поиск...', {reply_markup: {remove_keyboard: true}})
             const user = await collection.findOne({user_name: text})
-            if(user == null) return ctx.reply('Пользователь не найден.')
+            if(user == null) return ctx.reply('Пользователь не найден.', {reply_markup: {keyboard: [['Отменить поиск 🔴']], resize_keyboard: true}})
             let newar = []
             await collection.findOneAndUpdate({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}, {$set: {findedus: user.user_id}})
             if (user.paid.length == 0) return await ctx.reply(`Найден пользователь по запросу: ${text}\n\nИмя: ${user.user_fname}\nUsername: ${user.user_name}\nId: ${user.accountid}\nUser Id: ${user.user_id}\n\nБаланс: ${user.moneyc}₽`, {reply_markup: {inline_keyboard: [[Markup.button.callback('Изменить баланс пользователя 📝', 'editusmoneyc')], [Markup.button.callback('Назад ↩️', 'backtoadm')]]}})
@@ -1206,7 +1206,7 @@ getuserdb.on('text', async ctx => {
             const text = ctx.message.text
             await ctx.reply('Поиск...', {reply_markup: {remove_keyboard: true}})
             const user = await collection.findOne({user_fname: text})
-            if(user == null) return ctx.reply('Пользователь не найден.')
+            if(user == null) return ctx.reply('Пользователь не найден.', {reply_markup: {keyboard: [['Отменить поиск 🔴']], resize_keyboard: true}})
             let newar = []
             await collection.findOneAndUpdate({_id: ObjectId('63d3f7fc5477c3d84ca4ea6e')}, {$set: {findedus: user.user_id}})
             if (user.paid.length == 0) return await ctx.reply(`Найден пользователь по запросу: ${text}\n\nИмя: ${user.user_fname}\nUsername: ${user.user_name}\nId: ${user.accountid}\nUser Id: ${user.user_id}\n\nБаланс: ${user.moneyc}₽`, {reply_markup: {inline_keyboard: [[Markup.button.callback('Изменить баланс пользователя 📝', 'editusmoneyc')], [Markup.button.callback('Назад ↩️', 'backtoadm')]]}})
